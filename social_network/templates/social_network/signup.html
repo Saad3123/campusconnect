@@ -10,7 +10,7 @@
     
     <div class="container">
         <div class="left">
-            <img src="{% static 'images/img1.png' %}" alt="Image 1">
+            <img src="{% static 'images/img1.png' %}" alt="Image 1" class="smooth-image">
         </div>
         <div class="right">
             <h1>CampusConnect</h1>
@@ -33,9 +33,16 @@
                 <input type="submit" value="Sign Up">
     
                 <!-- Add "already have an account? login here" link -->
-                <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
             </form>
         </div>
+        
     </div>
+    <div class="footer ">
+            <div class="blue-box">
+            <p>POWERED BY <span class="blue-text">CavemenCoders</span></p>
+        </div>
+    </div>
+    
 </body>
 </html>

@@ -1,3 +1,7 @@
+html{
+    scroll-behavior: smooth;
+}
+
 /* Apply a background color and center the content */
 body {
     font-family: Arial, sans-serif;
@@ -24,7 +28,9 @@ body {
     flex: 1; /* Occupy 1 part of the available space */
     text-align: center; /* Center-align the image */
     padding: 20px;
-    
+    opacity: 0; /* Initially, make the div invisible */
+    transform: scale(0.8); /* Initially, scale the div down */
+    animation: zoomIn 0.9s ease forwards; /* Apply the animation */
 }
 
 img{
@@ -37,7 +43,45 @@ img{
     text-align: left; /* Align text and form to the left */
     padding: 30px;
     margin-left: 60px;
+    animation: zoomIn 0.9s forwards;
+    transform-origin: center;
+
 }
+/* supports signup box animation */
+@keyframes zoomIn { 
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* powered by stuff */
+.footer {
+    text-align: center; /* Center-align the content */
+    padding: 10px 0; /* Add padding for spacing */
+}
+.blue-box {
+    background-color:#002266; /* Set the background color to blue */
+    color: white; /* Set the text color to white */
+    border-radius: 10px; /* Add rounded corners */
+    padding: 2px 50px; /* Add padding inside the box */
+    display: inline-block; /* Make the box size fit its content */
+    font-size: small;
+}
+
+.blue-text {
+    font-weight: bold; /* Make the text bold */
+}
+/* smooth image edge */
+.smooth-image {
+    border-radius: 10px; /* Adjust the value to control the amount of rounding */
+}
+
+
 
 /* Center-align the input fields */
 input[type="text"],
@@ -52,7 +96,7 @@ input[type="password"] {
 
 /* Style submit button */
 input[type="submit"] {
-    background-color: #007BFF;
+    background-color:  #004080;
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -63,7 +107,7 @@ input[type="submit"] {
 
 /* Hover effect for the submit button */
 input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color:  #00cc66;
 }
 
 /* Center-align the form */
@@ -79,7 +123,8 @@ form {
 /* Style form title */
 form h2 {
     margin-top: 0;
-    color: #333;
+    color:  #004080
+    ;
 }
 
 /* Style labels */
