@@ -1,4 +1,9 @@
 /* Apply a background color and center the content */
+/* NEW */
+html{
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -24,25 +29,64 @@ body {
 .show-content {
     transform: scale(1); /* Pop the body in by scaling it up */
 }
-
+/* NEW */
 /* Style the left side containing the image */
-.left {
+.left { 
     flex: 1; /* Occupy 1 part of the available space */
     text-align: center; /* Center-align the image */
     padding: 20px;
-    
+    opacity: 0; /* Initially, make the div invisible */
+    transform: scale(0.8); /* Initially, scale the div down */
+    animation: zoomIn 0.9s ease forwards; /* Apply the animation */
 }
 
 img{
     width: 520px;
 }
-
+/* NEW */
 /* Style the right side containing the form and text */
 .right {
     flex: 1; /* Occupy 1 part of the available space */
     text-align: left; /* Align text and form to the left */
     padding: 30px;
     margin-left: 60px;
+    animation: zoomIn 0.9s forwards;
+    transform-origin: center;
+
+}
+/* supports signup box animation */
+@keyframes zoomIn { 
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+/* !!!!! */
+.footer {
+    text-align: center; /* Center-align the content */
+    padding: 10px 0; /* Add padding for spacing */
+}
+
+/* !!!! */
+.blue-box {
+    background-color:#002266; /* Set the background color to blue */
+    color: white; /* Set the text color to white */
+    border-radius: 10px; /* Add rounded corners */
+    padding: 2px 50px; /* Add padding inside the box */
+    display: inline-block; /* Make the box size fit its content */
+    font-size: small;
+}
+.blue-text {
+    font-weight: bold; /* Make the text bold */
+}
+
+/* smooth image edge */
+.smooth-image {
+    border-radius: 10px; /* Adjust the value to control the amount of rounding */
 }
 
 /* Center-align the input fields */

@@ -3,6 +3,7 @@ from django.contrib import admin
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from social_network.views import user_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -52,5 +53,22 @@ urlpatterns = [
 
     path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
 
+    # Add this URL pattern for the user profile page
+    path('user_profile/<str:username>/', views.user_profile, name='user_profile'),
+
+    path('user/<str:username>/posts/', views.user_posts, name='user_posts'),
+
+    path('follow_user/', views.follow_user, name='follow_user'),
+
+    path('<str:username>/followers/', views.followers, name='followers'),
     
+    path('<str:username>/followings/', views.followings, name='followings'),
+
+    # URL pattern for creating comments on a post
+    path('create_comment/<int:post_id>/', views.create_comment, name='create_comment'),
+
+    # Add this URL pattern for comment deletion
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
+
+
 ]

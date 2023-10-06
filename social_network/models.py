@@ -3,6 +3,7 @@ from django.db import models
 from django import forms
 import datetime
 from django.utils import timezone
+from django.dispatch import receiver
 
 
 class User(AbstractUser):
@@ -28,6 +29,7 @@ class User(AbstractUser):
     department = models.CharField(max_length=50, blank=True)
     year_of_study = models.CharField(max_length=10, null=True, blank=True)
     bio = models.TextField(blank=True)
+    following = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='followers')
 
     
 
@@ -49,10 +51,28 @@ class User(AbstractUser):
     def get_bio(self):
         return self.bio
     
+
+    
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.author} - {self.created}"
+        # Format the 'created' timestamp to a user-friendly string
+        formatted_time = self.created.strftime("%b %d, %Y %I:%M %p")
+        return f"{self.author}'s post- (' {self.content[:20]}..' ) {formatted_time}"
+    
+
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        # Format the 'created' timestamp to a user-friendly string
+        formatted_time = self.created.strftime("%b %d, %Y %I:%M %p")
+        return f"{self.user} commented on /{self.post}/ on {formatted_time}"

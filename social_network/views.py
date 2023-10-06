@@ -2,7 +2,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -13,40 +13,46 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import datetime
 import logging
+from django.db.models import Q
+import random
 from django.contrib.auth.models import User
 from django.http import Http404
-from .models import Post
-from .forms import PostForm
+from .models import Post , Comment
+from .forms import PostForm , FollowForm , CommentForm
+
 from django.db.models import F
 from django.contrib import messages
 from .models import User
 from datetime import datetime
 from django.http import HttpResponseServerError
+from django.utils import timezone
+
 
 @login_required
 def index(request):
     show_signup_content = not request.user.is_authenticated
 
-    # Fetch posts to display on the index page
-    posts = Post.objects.all().order_by('-created')
+    # Get the posts by the user and the users they follow
+    user = request.user
+    following = user.following.all()
+    posts = Post.objects.filter(Q(author=user) | Q(author__in=following)).order_by('-created')
+    form = PostForm()  # Include the form for creating a new post
 
     if request.method == "POST":
         # Handle user signup
         # ...
 
-       
         show_signup_content = False  # After signup, don't show signup content
 
-    return render(request, 'social_network/index.html', {'show_signup_content': show_signup_content, 'posts': posts})
-
+    return render(request, 'social_network/index.html', {'form': form,'show_signup_content': show_signup_content, 'posts': posts})
 
 
 @login_required
 def my_profile(request):
     if request.method == "POST":
-        print(request.POST)
         # Get the current user
         user = request.user
+
         
 
         # Update the user fields based on form input, but only if a value is provided
@@ -60,14 +66,118 @@ def my_profile(request):
             user.department = request.POST.get("department")
         if request.POST.get("year-of-study") is not None:
             user.year_of_study = request.POST.get("year-of-study")
-        
-        
-        
 
         # Save the user object
         user.save()
-        return render(request, 'social_network/my_profile.html')
-    return render(request, 'social_network/my_profile.html')
+
+    # Get the following and follower counts for the current user
+    following_count = request.user.following.count()
+    followers_count = request.user.followers.count()
+
+    return render(request, 'social_network/my_profile.html', {
+        'following_count': following_count,
+        'followers_count': followers_count,
+    })
+
+
+@login_required
+def user_profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        raise Http404("User does not exist.")
+
+    return render(request, 'social_network/user_profile.html', {'user': user})
+
+
+
+
+def create_comment(request, post_id):
+    # Retrieve the post object using the post_id
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user  # Assign the current user as the comment author
+            comment.post = post
+            comment.save()
+
+    # Redirect back to the referring page (the page where the comment was posted)
+    referring_page = request.META.get('HTTP_REFERER')
+    if referring_page:
+        return HttpResponseRedirect(referring_page)
+
+    # If the referring page is not available, you can provide a fallback URL
+    # return HttpResponseRedirect(reverse('fallback_url_name'))
+
+    # Handle other cases or return an error response if needed
+    return HttpResponseServerError("Invalid request.")
+
+
+
+@login_required
+def delete_comment(request, comment_id):
+    try:
+        comment = Comment.objects.get(id=comment_id)
+
+        # Check if the current user is the author of the comment
+        if comment.user == request.user:
+            comment.delete()
+            messages.success(request, "Comment deleted successfully.")
+        else:
+            messages.error(request, "You do not have permission to delete this comment.")
+
+    except Comment.DoesNotExist:
+        messages.error(request, "Comment does not exist.")
+
+    # Redirect back to the referring page (the page where the comment was deleted from)
+    referring_page = request.META.get('HTTP_REFERER')
+    if referring_page:
+        return HttpResponseRedirect(referring_page)
+
+    # If the referring page is not available, you can provide a fallback URL
+    # return HttpResponseRedirect(reverse('fallback_url_name'))
+
+    # Handle other cases or return an error response if needed
+    return HttpResponseServerError("Invalid request.")
+
+
+
+@login_required
+def follow_user(request):
+    if request.method == "POST":
+        follow_form = FollowForm(request.POST)
+        if follow_form.is_valid():
+            user_to_follow_id = follow_form.cleaned_data.get('user_to_follow')
+            user_to_follow = User.objects.get(pk=user_to_follow_id)
+
+            if user_to_follow == request.user:
+                # Prevent following oneself
+                raise Http404("Invalid request")
+
+            if user_to_follow in request.user.following.all():
+                # User is already following, so unfollow
+                request.user.following.remove(user_to_follow)
+                user_to_follow.followers.remove(request.user)
+            else:
+                # User is not following, so follow
+                request.user.following.add(user_to_follow)
+                user_to_follow.followers.add(request.user)
+
+            # Update the following and follower counts
+            request.user.save()
+            user_to_follow.save()
+
+            # Render the user_profile page of the user they followed or unfollowed
+            return render(request, 'social_network/user_profile.html', {
+                'user': user_to_follow,
+                'follow_form': follow_form,
+            })
+
+    # Handle other cases or errors here if needed
+    raise Http404("Invalid request")
 
 
 
@@ -118,11 +228,15 @@ def delete_post(request, post_id):
         post = Post.objects.get(id=post_id)
         if post.author == request.user:
             post.delete()
-            # Redirect back to the profile page or any desired page
-            return redirect('my_profile')
+    
+        # Check the Referer header to determine the previous page
+        referer = request.META.get('HTTP_REFERER')
+        if referer:
+            # Redirect the user back to the previous page
+            return redirect(referer)
         else:
-            # If the user is not the author of the post, raise a 404 error
-            raise Http404("You do not have permission to delete this post.")
+            # If no referer is provided, redirect to a default page (e.g., my_profile)
+            return redirect('my_profile')  # Change 'my_profile' to the appropriate URL name
     except Post.DoesNotExist:
         raise Http404("Post does not exist.")
     
@@ -171,6 +285,9 @@ def update_profile(request):
     return HttpResponseServerError("Invalid request.")  # You can customize this error message
 
 
+
+
+
 @login_required
 def update_bio(request):
     if request.method == 'POST':
@@ -208,7 +325,17 @@ def create_post(request):
             post.author = user
             post.save()
     
-    return redirect('display_posts')  # Redirect to the display_posts view
+    # Check the Referer header to determine the previous page
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        # Redirect the user back to the previous page
+        return redirect(referer)
+    else:
+        # If no referer is provided, redirect to a default page (e.g., index)
+        return redirect('index')  # Change 'index' to the appropriate URL name
+    
+
+    
 
 @login_required(login_url='login')
 def display_posts(request):
@@ -218,13 +345,14 @@ def display_posts(request):
     
     return render(request, 'social_network/my_profile.html', {'form': form, 'posts': posts})
 
+
 def discover(request):
     return render(request, 'social_network/discover.html')
 
 def settings(request):
     return render(request, 'social_network/settings.html')
 
-
+@csrf_exempt
 def login_view(request):
 
     if request.method == "POST":
@@ -286,3 +414,32 @@ def signup(request):
         })
     else:
         return render(request, "social_network/signup.html", {'csrf_token': csrf.get_token(request)})
+
+
+
+def discover(request):
+    # Retrieve all users
+    all_users = list(User.objects.all() ) # Replace with your custom user profile model if needed
+    # Shuffle the list to randomize the order
+    random.shuffle(all_users)
+    return render(request, 'social_network/discover.html', {'all_users': all_users})
+
+
+def user_posts(request, username):
+    try:
+        user = User.objects.get(username=username)
+        posts = Post.objects.filter(author=user).order_by('-created')
+        return render(request, 'social_network/user_profile.html', {'user': user, 'posts': posts})
+    except User.DoesNotExist:
+        raise Http404("User does not exist.")
+    
+
+def followers(request, username):
+    user = get_object_or_404(User, username=username)
+    followers = user.followers.all()
+    return render(request, 'social_network/followers.html', {'user': user, 'followers': followers})
+
+def followings(request, username):
+    user = get_object_or_404(User, username=username)
+    followings = user.following.all()
+    return render(request, 'social_network/followings.html', {'user': user, 'followings': followings})
