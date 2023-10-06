@@ -1,44 +1,118 @@
+/* General Styles */
 body {
-            background-image: url('/static/images/banner.png');
-            background-size: 100%; /* Set the background size */
-            background-repeat: no-repeat;
-            margin-bottom: 0; /* Remove body margin to prevent unwanted spacing */
-            padding: 0; /* Remove body padding to prevent unwanted spacing */
-        }
+    background-image: url('/static/images/banner.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+}
 
-        /* Style the navigation links */
-        .navbar .nav-item {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start; /* Push the links to the left */
-            white-space: nowrap; /* Prevent text from wrapping */
-            overflow: hidden; /* Hide any overflow */
-        }
+.container-fluid {
+    margin: 0;
+    padding: 0;
+}
 
-        .navbar .nav-link {
-            text-decoration: none;
-            color: white;
-            font-family: 'Canva Sans', sans-serif;
-            font-weight: bold;
-            font-size: 1.0rem; /* Reduce font size */
-            transition: color 0.3s, font-size 0.3s;
-            display: flex;
-            align-items: center;
-            max-width: 80%; /* Limit the maximum width of the link */
-        }
+/* Header Styles */
+.welcome-text {
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Canva Sans';
+    color: rgb(252, 250, 250);
+    margin-top: 15px;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
 
-        .navbar .nav-link i {
-            margin-right: 0.5rem; /* Reduce spacing between icon and text */
-        }
+.campus-connect {
+    font-weight: bold;
+    font-size: 30px;
+    color: rgb(252, 250, 250);
+    margin-top: 10px;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
 
-        /* Hover effect */
-        .navbar .nav-link:hover {
-            color: rgb(107, 147, 205);
-            font-size: 1.2rem; /* Increase font size on hover */
-        }
+/* Navigation Styles */
+.navbar {
+    background-color: rgb(25, 23, 23);
+}
 
-        /* Add this rule to make active links pink */
-        .nav-link.active {
-            color: rgb(49, 91, 153);
-            /* You can customize this style further if needed */
-        }
+.navbar .nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.navbar .nav-link {
+    text-decoration: none;
+    color: white;
+    font-family: 'Canva Sans', sans-serif;
+    font-weight: bold;
+    font-size: 1.0rem;
+    transition: color 0.3s, font-size 0.3s;
+    display: flex;
+    align-items: center;
+    max-width: 80%;
+}
+
+.navbar .nav-link i {
+    margin-right: 0.5rem;
+}
+
+.navbar .nav-link:hover {
+    color: rgb(107, 147, 205);
+    font-size: 1.2rem;
+}
+
+.content {
+    background-color: rgb(251, 245, 245);
+    width: 100%;
+    /* overflow: hidden; */
+}
+
+.content-navbar {
+    background-color: #c5d1dd;
+    color: white;
+    padding: 10px;
+    height: 2.5rem;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+.content-text {
+    color: rgb(25, 23, 23);
+}
+
+.main-content {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 20px;
+    margin: 10px;
+}
+
+/* Sponsored Ads Styles */
+.sponsored-ads {
+    background-color: rgb(235, 214, 214);
+    text-align: center;
+    width: 200px;
+    /* position: fixed;
+    top: 95px;
+    right: 0;
+    height: calc(100% - 95px); */
+    border: 1.5px solid black;
+    padding: 10px;
+}
+
+.sponsored-ads h4 {
+    margin-bottom: 10px;
+}
+
+.sponsored-ads ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sponsored-ads li {
+    font-size: 10px;
+    margin: 0;
+}

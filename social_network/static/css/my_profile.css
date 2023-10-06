@@ -1,37 +1,33 @@
+/* Common styles for all screen sizes */
 
-    .edit-profile-photo:hover i {
-        color: blue;
-    }
+.edit-profile-photo:hover i {
+    color: blue;
+}
 
-    /* Style for the welcome-text container */
-    .welcome-text-container {
-        padding: 20px;
-    }
+.welcome-text-container {
+    padding: 20px;
+}
 
-    /* Style for Following and Followers sections */
-    .following-followers {
-        margin-top: 20px;
-    }
+.following-followers {
+    margin-top: 20px;
+}
 
-    .following, .followers {
-        margin-right: 20px;
-    }
+.following, .followers {
+    margin-right: 20px;
+}
 
-/* Style the smaller profile picture */
 .profile-picture-small {
-    width: 2rem; /* Adjust the size as needed */
-    height: 2rem; /* Adjust the size as needed */
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     margin-right: 10px;
 }
 
-/* Style the list to remove bullet points */
 ul.list-unstyled {
     list-style: none;
     padding-left: 0;
 }
 
-/* Style each post as a card-like element */
 .media {
     background-color: #fff;
     border: 1px solid #ddd;
@@ -41,7 +37,6 @@ ul.list-unstyled {
     display: flex;
 }
 
-/* Style the profile picture */
 .profile-picture {
     width: 50px;
     height: 50px;
@@ -49,14 +44,43 @@ ul.list-unstyled {
     margin-right: 10px;
 }
 
-/* Style the post content and author information */
 .media-body {
     flex: 1;
 }
 
-
-
-/* Add a subtle shadow to the card */
 .media:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Media query for smaller screens */
+@media only screen and (max-width: 768px) {
+    .content {
+        width: 100%; /* Adjust width for smaller screens */
+        position: relative; /* Change to relative positioning */
+        left: 0; /* Reset left positioning */
+        margin: 0; /* Reset margin */
+        overflow-y: auto;
+    }
+
+    .row {
+        flex-direction: column; /* Stack columns in smaller screens */
+    }
+
+    .col-md-4,
+    .col-md-8 {
+        width: 100%; /* Full width for smaller screens */
+    }
+
+    .profile-photo {
+        text-align: center;
+    }
+
+    .profile-photo-container img {
+        max-width: 100%; /* Make profile photo responsive */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    .content .card {
+        width: 100%; /* Full width for smaller screens */
+    }
 }

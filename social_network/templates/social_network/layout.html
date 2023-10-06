@@ -29,53 +29,59 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 text-left">
-                <h1 style="font-weight: bold; font-size: 20px; font-family: 'Canva Sans'; color: rgb(252, 250, 250); margin-top: 15px;
-                            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;">
-                    Welcome, @{{ request.user.username }}</h1>
+                <h1 class = "welcome-text">
+                    <!-- new code above -->
+                    Welcome, @{{ request.user.username }}
+                </h1>
             </div>
             <div class="col-md-6 text-right">
-                <h1 style="font-weight: bold; font-size: 30px;  color: rgb(252, 250, 250); margin-top: 10px;
-                            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;">
-                    CampusConnect</h1>
+                <h1 class="campus-connect">
+                    <!-- new code above -->
+                    CampusConnect
+                </h1>
             </div>
         </div>
     </div>
 
-    <div class="navbar" style="background-color: rgb(25, 23, 23); width: 180px; position: absolute; top: 63px; bottom: 0; left: 0; text-align: left;">
-        <div class="nav-item">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="navbar-nav flex-column">
+        <!-- new code above -->
+        
             <a href="{% url 'my_profile' %}" class="nav-link {% if request.path == '/my_profile/' %}active{% endif %}">
                 <i class="fas fa-user"></i>
                 My Profile
             </a>
         </div>
-        <div class="nav-item">
+        <!-- <div class="nav-item"> -->
             <a href="{% url 'index' %}" class="nav-link {% if request.path == '/index/' %}active{% endif %}">
                 <i class="fas fa-home"></i>
                 Home
             </a>
-        </div>
-        <div class="nav-item">
+        <!-- </div> -->
+        <!-- <div class="nav-item"> -->
             <a href="{% url 'discover' %}" class="nav-link {% if request.path == '/discover/' %}active{% endif %}">
                 <i class="fas fa-compass"></i>
                 Discover
             </a>
-        </div>
-        <div class="nav-item">
+        <!-- </div> -->
+        <!-- <div class="nav-item"> -->
             <a href="{% url 'settings' %}" class="nav-link {% if request.path == '/settings/' %}active{% endif %}">
                 <i class="fas fa-cog"></i>
                 Settings
             </a>
-        </div>
+        <!-- </div> -->
        
-        <div class="nav-item mt-auto">
-            <p style="font-size: 12px; color: white;">&copy; 2023 CampusConnect</p>
-        </div>
+        <!-- <div class="nav-item mt-auto"> -->
+            <p class="nav-link mt-auto">&copy; 2023 CampusConnect</p>
+        <!-- </div> -->
     </div>
+    </nav>
     
    
-    <div class="content" style="background-color: rgb(251, 245, 245); width: 800px; position: absolute; top: 95px; left: 17%; bottom: 0; overflow: hidden;">
-        <div class="content-navbar" style="background-color: #c5d1dd; color: white; padding: 10px; height: 2.5rem; border: 1px solid black; font-weight: bold;">
-            <div class="content-text" style="color: rgb(25, 23, 23);">
+    <div class="content">
+        <div class="content-navbar">
+            <div class="content-text">
+                <!-- new code above -->
                 {% if request.path == '/my_profile/' %}
                     My Profile
                 {% elif request.path == '/index/' %}
@@ -90,7 +96,7 @@
         
         <!-- Add your content here -->
         <!-- Add your content here -->
-        <div class="main-content" style="overflow-y: auto; height: calc(100% - 2.5rem); padding: 20px; margin: 10px;">
+        <div class="main-content">
             {% block main_content %}
                 {% if show_content %} 
                     <h1>Welcome to CampusConnect @{{ user.username }}- Your Campus Social Network!</h1>
@@ -126,27 +132,29 @@
 
                 {% endif %}
             {% endblock %}
+          <!-- Sponsored ads with a black border -->
+        
+
         </div>
-
-    </div>
-
-    <!-- Sponsored ads with a black border -->
-    <div class="sponsored-ads" style="background-color: rgb(235, 214, 214); text-align: center; width: 200px; position: absolute; top: 95px; left: 82%; bottom: 35px; border: 1.5px solid black; padding: 10px;">
-        <div style="margin: 0 auto; max-width: 150px; margin-left: 10px; font-weight: bold;">
-            <h4>NEWS</h4>
-            <p style="font-size: 12px; margin: 0;">Welcome to CampusConnect. You are using the beta version of this site, meaning there are plenty more changes to come. This site started as a computer science course project run by:</p>
-            <ul style="list-style: none; padding-left: 0; ">
-                <li style="font-size: 10px; margin: 0;">Jordan - <a href="mailto:jbudd2004@gmail.com">jbudd2004@gmail.com</a></li>
-                <li style="font-size: 10px; margin: 0;">Vatan - <a href="mailto:vatandahiya2003@gmail.com">vatandahiya2003@gmail.com</a></li>
-                <li style="font-size: 10px; margin: 0;">Clinton - <a href="mailto:clintonquaye1@gmail.com">clintonquaye1@gmail.com</a></li>
-                <li style="font-size: 10px; margin: 0;">Fletcher - <a href="mailto:fletcherfalk@gmail.com">fletcherfalk@gmail.com</a></li>
-                <li style="font-size: 10px; margin: 0;">Saad - <a href="mailto:syeddsaad@gmail.com">syeddsaad@gmail.com</a></li>
-                <li style="font-size: 10px; margin: 0;">Joe - <a href="mailto:josephephraim68@yahoo.com">josephephraim68@yahoo.com</a></li>
-            </ul>
-            <p style="font-size: 12px; margin: 0;">You can contact either of us via the emails provided with any questions you may have.</p>
+        <div class="sponsored-ads">
+            <!-- <div style="margin: 0 auto; max-width: 150px; margin-left: 10px; font-weight: bold;"> -->
+                <h4>NEWS</h4>
+                <p style="font-size: 12px; margin: 0;">Welcome to CampusConnect. You are using the beta version of this site, meaning there are plenty more changes to come. This site started as a computer science course project run by:</p>
+                <ul style="list-style: none; padding-left: 0; ">
+                    <li style="font-size: 10px; margin: 0;">Jordan - <a href="mailto:jbudd2004@gmail.com">jbudd2004@gmail.com</a></li>
+                    <li style="font-size: 10px; margin: 0;">Vatan - <a href="mailto:vatandahiya2003@gmail.com">vatandahiya2003@gmail.com</a></li>
+                    <li style="font-size: 10px; margin: 0;">Clinton - <a href="mailto:clintonquaye1@gmail.com">clintonquaye1@gmail.com</a></li>
+                    <li style="font-size: 10px; margin: 0;">Fletcher - <a href="mailto:fletcherfalk@gmail.com">fletcherfalk@gmail.com</a></li>
+                    <li style="font-size: 10px; margin: 0;">Saad - <a href="mailto:syeddsaad@gmail.com">syeddsaad@gmail.com</a></li>
+                    <li style="font-size: 10px; margin: 0;">Joe - <a href="mailto:josephephraim68@yahoo.com">josephephraim68@yahoo.com</a></li>
+                </ul>
+                <p style="font-size: 12px; margin: 0;">You can contact either of us via the emails provided with any questions you may have.</p>
+            </div>
         </div>
     </div>
     
+
+   
     
 </body>
 </html>
