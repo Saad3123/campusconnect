@@ -16,9 +16,8 @@ body {
     display: flex;
     justify-content: space-around; /* Distribute space around elements */
     align-items: center; /* Vertically align elements */
+    padding: 20px; /* Add padding for better spacing */
 }
-
-/* ... (Rest of your existing CSS) */
 
 /* Add a class to trigger the pop-in effect when applied to the body */
 .show-content {
@@ -30,27 +29,51 @@ body {
     flex: 1; /* Occupy 1 part of the available space */
     text-align: center; /* Center-align the image */
     padding: 20px;
-    
+    opacity: 0; /* Initially, make the div invisible */
+    transform: scale(0.8); /* Initially, scale the div down */
+    animation: zoomIn 0.9s ease forwards; /* Apply the animation */
 }
 
-img{
-    width: 520px;
+img {
+    width: 100%; /* Make the image responsive */
+    max-width: 520px; /* Limit the maximum width of the image */
 }
 
 /* Style the right side containing the form and text */
+/* .right {
+    flex: 1; 
+    text-align: left; 
+    padding: 30px;
+    margin-left: 60px;
+} */
 .right {
     flex: 1; /* Occupy 1 part of the available space */
     text-align: left; /* Align text and form to the left */
     padding: 30px;
     margin-left: 60px;
+    animation: zoomIn 0.9s forwards;
+    transform-origin: center;
+
+}
+
+/* supports login box animation */
+@keyframes zoomIn { 
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* Center-align the input fields */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: 90%;
-    padding: 4px; /* Increased padding for better appearance */
+    width: 100%; /* Make the input fields responsive */
+    padding: 8px; /* Adjust padding for better appearance */
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 15px;
@@ -58,6 +81,7 @@ input[type="password"] {
 
 /* Style submit button */
 input[type="submit"] {
+    width: 100%; /* Make the button responsive */
     background-color: #007BFF;
     color: #fff;
     border: none;
@@ -74,7 +98,7 @@ input[type="submit"]:hover {
 
 /* Center-align the form */
 form {
-    max-width: 400px;
+    max-width: 100%; /* Make the form responsive */
     padding: 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -94,7 +118,8 @@ label {
 }
 
 /* Add some spacing between elements */
-form label, form input {
+form label,
+form input {
     display: block;
     margin-bottom: 10px;
 }
@@ -110,4 +135,14 @@ p a:hover {
     text-decoration: underline; /* Add underline on hover */
 }
 
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack elements vertically on smaller screens */
+        padding: 10px; /* Adjust padding for better spacing */
+    }
 
+    .right {
+        margin-left: 0; /* Remove left margin on smaller screens */
+    }
+}
