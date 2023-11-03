@@ -23,13 +23,11 @@ body {
     align-items: center; /* Vertically align elements */
 }
 
-/* ... (Rest of your existing CSS) */
-
 /* Add a class to trigger the pop-in effect when applied to the body */
 .show-content {
     transform: scale(1); /* Pop the body in by scaling it up */
 }
-/* NEW */
+/* JOE these anre the animation css stuff NEW */
 /* Style the left side containing the image */
 .left { 
     flex: 1; /* Occupy 1 part of the available space */
@@ -48,7 +46,7 @@ img {
     max-width: 520px; /* Limit the maximum width of the image */
 }
 /* NEW */
-/* Style the right side containing the form and text */
+/* JOE Style the right side containing the form and text */
 .right {
     flex: 1; /* Occupy 1 part of the available space */
     text-align: left; /* Align text and form to the left */
